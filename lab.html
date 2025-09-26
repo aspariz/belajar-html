@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Uji Sampel Limbah - Laboratorium Analitik Indonesia</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons for modern icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Applying the Inter font as the default */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for better UI */
+        .step-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .payment-option {
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .payment-option.selected {
+            border-color: #3b82f6; /* blue-500 */
+            background-color: #eff6ff; /* blue-50 */
+            transform: scale(1.02);
+        }
+        /* Hide number input arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none; 
+          margin: 0; 
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header Section -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-900">
+                <span class="text-blue-600">Lab</span>Analitik
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#alur" class="text-gray-600 hover:text-blue-600">Alur Pendaftaran</a>
+                <a href="#layanan" class="text-gray-600 hover:text-blue-600">Layanan</a>
+                <a href="#faq" class="text-gray-600 hover:text-blue-600">FAQ</a>
+                <a href="#kontak" class="text-gray-600 hover:text-blue-600">Kontak</a>
+            </div>
+            <a href="#form-pendaftaran" class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                Daftar Sekarang
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <section class="text-center py-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+                Pendaftaran Online Uji Sampel Limbah
+            </h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+                Layanan terakreditasi untuk memastikan bisnis Anda mematuhi standar baku mutu lingkungan. Proses cepat, akurat, dan terintegrasi dengan pembayaran online.
+            </p>
+            <div class="mt-8">
+                <a href="#form-pendaftaran" class="bg-green-500 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-green-600 transition-transform transform hover:scale-105">
+                    Mulai Pendaftaran
+                </a>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="alur" class="py-16">
+            <h2 class="text-3xl font-bold text-center mb-12">Alur Pendaftaran Mudah dalam 4 Langkah</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center step-card">
+                    <div class="bg-blue-100 text-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="clipboard-list" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">1. Isi Formulir</h3>
+                    <p class="text-gray-600">Lengkapi data perusahaan, PIC, dan detail sampel secara online.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center step-card">
+                    <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="credit-card" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">2. Lakukan Pembayaran</h3>
+                    <p class="text-gray-600">Pilih paket dan bayar aman melalui QRIS, VA, atau Kartu Kredit.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center step-card">
+                    <div class="bg-orange-100 text-orange-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="package-check" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">3. Kirim Sampel</h3>
+                    <p class="text-gray-600">Dapatkan kode unik, lalu tulis di kemasan dan kirim sampel ke lab.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center step-card">
+                    <div class="bg-purple-100 text-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="mail-check" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">4. Terima Hasil Uji</h3>
+                    <p class="text-gray-600">Sertifikat Hasil Uji (SHU) digital dikirim ke email Anda dalam 7-14 hari kerja.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Form Section -->
+        <section id="form-pendaftaran" class="py-16">
+            <div id="registration-form-container" class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-2xl">
+                <h2 class="text-3xl font-bold text-center mb-2">Formulir Pendaftaran Uji Sampel</h2>
+                <p class="text-center text-gray-600 mb-8">Mohon isi data di bawah ini dengan lengkap dan benar.</p>
+                
+                <form id="registrationForm">
+                    <!-- Client Information -->
+                    <fieldset class="mb-8">
+                        <legend class="text-xl font-semibold mb-4 border-b-2 border-blue-500 pb-2 w-full">1. Informasi Klien</legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="companyName" class="block text-sm font-medium text-gray-700 mb-1">Nama Perusahaan/Hotel</label>
+                                <input type="text" id="companyName" name="companyName" placeholder="Contoh: Hotel A" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="companyAddress" class="block text-sm font-medium text-gray-700 mb-1">Alamat Perusahaan</label>
+                                <input type="text" id="companyAddress" name="companyAddress" placeholder="Alamat lengkap" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="picName" class="block text-sm font-medium text-gray-700 mb-1">Nama Penanggung Jawab (PIC)</label>
+                                <input type="text" id="picName" name="picName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                             <div>
+                                <label for="picPhone" class="block text-sm font-medium text-gray-700 mb-1">No. Telepon/WhatsApp (Aktif)</label>
+                                <input type="number" id="picPhone" name="picPhone" placeholder="08xxxxxxxxxx" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="picEmail" class="block text-sm font-medium text-gray-700 mb-1">Alamat Email (Untuk pengiriman hasil & invoice)</label>
+                                <input type="email" id="picEmail" name="picEmail" placeholder="email@perusahaan.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Sample Information -->
+                    <fieldset class="mb-8">
+                        <legend class="text-xl font-semibold mb-4 border-b-2 border-blue-500 pb-2 w-full">2. Informasi Sampel</legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="sampleType" class="block text-sm font-medium text-gray-700 mb-1">Jenis Sampel</label>
+                                <select id="sampleType" name="sampleType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                    <option>Limbah Cair</option>
+                                    <option>Limbah Padat</option>
+                                    <option>Air Bersih</option>
+                                    <option>Lainnya</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label for="sampleSource" class="block text-sm font-medium text-gray-700 mb-1">Sumber Sampel</label>
+                                <input type="text" id="sampleSource" name="sampleSource" placeholder="Contoh: Outlet IPAL Hotel" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="samplingDate" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Pengambilan Sampel</label>
+                                <input type="date" id="samplingDate" name="samplingDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Package Selection -->
+                    <fieldset>
+                        <legend class="text-xl font-semibold mb-4 border-b-2 border-blue-500 pb-2 w-full">3. Pilih Paket Pengujian</legend>
+                        <div id="package-options" class="space-y-4">
+                            <!-- Package 1 -->
+                            <div class="p-4 border border-gray-200 rounded-lg has-[:checked]:bg-blue-50 has-[:checked]:border-blue-400">
+                                <label class="flex items-start cursor-pointer">
+                                    <input type="checkbox" name="package" value="1500000" data-name="Paket Baku Mutu Air Limbah Hotel" class="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <div class="ml-4">
+                                        <p class="font-semibold text-gray-800">Paket pengujian 1</p>
+                                        <p class="text-sm text-gray-600"></p>
+                                        <p class="text-sm font-bold text-blue-600 mt-1">Rp 1.500.000</p>
+                                    </div>
+                                </label>
+                            </div>
+                            <!-- Package 2 -->
+                            <div class="p-4 border border-gray-200 rounded-lg has-[:checked]:bg-blue-50 has-[:checked]:border-blue-400">
+                                <label class="flex items-start cursor-pointer">
+                                    <input type="checkbox" name="package" value="750000" data-name="Uji Logam Berat (Pb, Cd, Cr, Cu)" class="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <div class="ml-4">
+                                        <p class="font-semibold text-gray-800">Paket pengujian 2</p>
+                                        <p class="text-sm text-gray-600"></p>
+                                        <p class="text-sm font-bold text-blue-600 mt-1">Rp 750.000</p>
+                                    </div>
+                                </label>
+                            </div>
+                            <!-- Package 3 -->
+                             <div class="p-4 border border-gray-200 rounded-lg has-[:checked]:bg-blue-50 has-[:checked]:border-blue-400">
+                                <label class="flex items-start cursor-pointer">
+                                    <input type="checkbox" name="package" value="350000" data-name="Uji Fenol & Sulfida" class="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <div class="ml-4">
+                                        <p class="font-semibold text-gray-800">Paket pengujian 3</p>
+                                        <p class="text-sm text-gray-600"></p>
+                                        <p class="text-sm font-bold text-blue-600 mt-1">Rp 350.000</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Total Cost & Submit -->
+                    <div class="mt-10 pt-6 border-t-2 border-dashed">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-xl font-semibold">Total Biaya:</span>
+                            <span id="total-cost" class="text-2xl font-bold text-blue-600">Rp 0</span>
+                        </div>
+                        <button type="submit" class="w-full bg-green-500 text-white font-bold text-lg py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                            Lanjutkan ke Pembayaran Aman
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Payment Modal/Section -->
+            <div id="payment-container" class="hidden max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-2xl">
+                <h2 class="text-3xl font-bold text-center mb-2">Pilih Metode Pembayaran</h2>
+                <p class="text-center text-gray-600 mb-8">Silakan pilih metode pembayaran yang Anda inginkan.</p>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-8">
+                    <p class="font-semibold">Ringkasan Pesanan:</p>
+                    <ul id="summary-list" class="list-disc list-inside text-sm text-gray-700 mt-2"></ul>
+                    <div class="flex justify-between items-center mt-4">
+                        <span class="text-lg font-semibold">Total Pembayaran:</span>
+                        <span id="payment-total" class="text-xl font-bold text-blue-600">Rp 0</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- QRIS -->
+                    <div class="payment-option p-4 border rounded-lg cursor-pointer" data-method="qris">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">QRIS</span>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" alt="Logo QRIS" class="h-6">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Mendukung GoPay, OVO, DANA, ShopeePay, Mobile Banking.</p>
+                    </div>
+                    <!-- Virtual Account -->
+                    <div class="payment-option p-4 border rounded-lg cursor-pointer" data-method="va">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Virtual Account</span>
+                            <img src="https://inforial.id/wp-content/uploads/2021/08/logo-bank-bumn.png" alt="Logo Bank" class="h-6">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">BCA, Mandiri, BNI, BRI, dll.</p>
+                    </div>
+                    <!-- Credit Card -->
+                    <div class="payment-option p-4 border rounded-lg cursor-pointer" data-method="cc">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Kartu Kredit/Debit</span>
+                            <div class="flex gap-2">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1280px-Visa_Inc._logo.svg.png" alt="Visa" class="h-4">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/1280px-Mastercard_2019_logo.svg.png" alt="Mastercard" class="h-4">
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Pembayaran aman dengan kartu Anda.</p>
+                    </div>
+                    <!-- Retail -->
+                    <div class="payment-option p-4 border rounded-lg cursor-pointer" data-method="retail">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Gerai Ritel</span>
+                             <div class="flex gap-2">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Logo_Indomaret.png" alt="Indomaret" class="h-4">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Alfamart_logo.svg/1200px-Alfamart_logo.svg.png" alt="Alfamart" class="h-4">
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Bayar tunai di Indomaret atau Alfamart.</p>
+                    </div>
+                </div>
+
+                <!-- Payment Details (Simulated) -->
+                <div id="payment-details" class="mt-8 hidden">
+                    <div id="qris-details" class="hidden text-center">
+                        <p class="font-semibold mb-2">Pindai kode QR di bawah ini</p>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://example.com/payment-gateway" alt="Contoh Kode QRIS" class="mx-auto rounded-lg border p-2">
+                        <p class="text-sm text-gray-500 mt-2">Gunakan aplikasi pembayaran favorit Anda.</p>
+                    </div>
+                     <div id="va-details" class="hidden">
+                        <p class="font-semibold mb-2">Silakan transfer ke Virtual Account berikut:</p>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <p>Bank: <span class="font-semibold">BCA Virtual Account</span></p>
+                            <p>Nomor VA: <span class="font-semibold">8808 1234 5678 9012</span></p>
+                            <p>Atas Nama: <span class="font-semibold">LabAnalitik Indonesia</span></p>
+                        </div>
+                    </div>
+                    <div id="cc-details" class="hidden">
+                        <p class="font-semibold mb-2">Masukkan Detail Kartu Kredit</p>
+                        <div class="space-y-4">
+                             <input type="text" placeholder="Nomor Kartu" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                             <div class="grid grid-cols-2 gap-4">
+                                 <input type="text" placeholder="MM/YY" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                 <input type="text" placeholder="CVC" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                             </div>
+                        </div>
+                    </div>
+                     <div id="retail-details" class="hidden">
+                        <p class="font-semibold mb-2">Tunjukkan kode pembayaran di kasir:</p>
+                        <div class="bg-gray-100 p-4 rounded-lg text-center">
+                            <p>Kode Pembayaran:</p>
+                            <p class="text-2xl font-bold tracking-widest">LAB12345XYZ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button id="confirm-payment-btn" class="w-full bg-blue-600 text-white font-bold text-lg py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:bg-gray-400" disabled>
+                        Konfirmasi Pembayaran
+                    </button>
+                     <button id="back-to-form-btn" class="w-full mt-2 text-center text-sm text-gray-600 hover:text-blue-600">
+                        Kembali ke Formulir
+                    </button>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div id="success-container" class="hidden text-center max-w-2xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-2xl">
+                <div class="bg-green-100 text-green-600 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="check-circle-2" class="w-12 h-12"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900">Pendaftaran Berhasil!</h2>
+                <p class="mt-2 text-gray-600">Terima kasih telah melakukan pendaftaran dan pembayaran.</p>
+                <div class="mt-6 bg-gray-100 p-4 rounded-lg border border-dashed">
+                    <p class="text-sm">Kode Registrasi Unik Anda:</p>
+                    <p id="registration-code" class="text-2xl font-bold text-blue-600 tracking-wider my-2">LAB-XXXXXX</p>
+                    <p class="text-sm font-semibold text-red-600">PENTING: Mohon tulis kode ini dengan jelas pada kemasan sampel Anda sebelum dikirim.</p>
+                </div>
+                 <p class="mt-6 text-sm text-gray-500">
+                    Invoice dan detail pendaftaran telah kami kirim ke email Anda. Silakan kirim sampel Anda ke alamat: <br>
+                    <span class="font-semibold">Jl. Sains Terapan No. 123, Jakarta, Indonesia.</span>
+                </p>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer id="kontak" class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-10 text-center">
+            <h3 class="text-2xl font-bold">LabAnalitik Indonesia</h3>
+            <p class="mt-2">Partner Terpercaya untuk Kepatuhan Lingkungan Anda.</p>
+            <div class="mt-4">
+                <p>Jl. Sains Terapan No. 123, Jakarta, Indonesia</p>
+                <p>Email: info@labanalitik.co.id | Telp: (021) 123-4567</p>
+            </div>
+            <p class="text-sm text-gray-400 mt-8">&copy; 2025 LabAnalitik Indonesia. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Lucide Icons
+            lucide.createIcons();
+
+            // --- Elements ---
+            const packageOptions = document.querySelectorAll('input[name="package"]');
+            const totalCostEl = document.getElementById('total-cost');
+            const registrationForm = document.getElementById('registrationForm');
+            const formContainer = document.getElementById('registration-form-container');
+            const paymentContainer = document.getElementById('payment-container');
+            const successContainer = document.getElementById('success-container');
+            const paymentTotalEl = document.getElementById('payment-total');
+            const summaryListEl = document.getElementById('summary-list');
+            
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            const paymentDetailsContainer = document.getElementById('payment-details');
+            const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+            const backToFormBtn = document.getElementById('back-to-form-btn');
+            const registrationCodeEl = document.getElementById('registration-code');
+
+            // --- Functions ---
+            const formatCurrency = (amount) => {
+                return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+            };
+
+            const calculateTotal = () => {
+                let total = 0;
+                packageOptions.forEach(option => {
+                    if (option.checked) {
+                        total += parseInt(option.value);
+                    }
+                });
+                totalCostEl.textContent = formatCurrency(total);
+                return total;
+            };
+
+            const updateSummary = () => {
+                summaryListEl.innerHTML = '';
+                let total = 0;
+                packageOptions.forEach(option => {
+                    if (option.checked) {
+                        const li = document.createElement('li');
+                        li.textContent = `${option.dataset.name} - ${formatCurrency(option.value)}`;
+                        summaryListEl.appendChild(li);
+                        total += parseInt(option.value);
+                    }
+                });
+                paymentTotalEl.textContent = formatCurrency(total);
+            };
+
+            const showPaymentDetails = (method) => {
+                // Hide all details first
+                document.querySelectorAll('#payment-details > div').forEach(div => div.classList.add('hidden'));
+                
+                // Show the selected one
+                const detailEl = document.getElementById(`${method}-details`);
+                if (detailEl) {
+                    detailEl.classList.remove('hidden');
+                }
+                paymentDetailsContainer.classList.remove('hidden');
+            };
+
+            // --- Event Listeners ---
+            packageOptions.forEach(option => {
+                option.addEventListener('change', calculateTotal);
+            });
+
+            registrationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (calculateTotal() === 0) {
+                    alert('Silakan pilih minimal satu paket pengujian.');
+                    return;
+                }
+                updateSummary();
+                formContainer.classList.add('hidden');
+                paymentContainer.classList.remove('hidden');
+                window.scrollTo({ top: document.getElementById('form-pendaftaran').offsetTop, behavior: 'smooth' });
+            });
+            
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove 'selected' from all
+                    paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                    // Add 'selected' to the clicked one
+                    this.classList.add('selected');
+                    const method = this.dataset.method;
+                    showPaymentDetails(method);
+                    confirmPaymentBtn.disabled = false;
+                });
+            });
+
+            confirmPaymentBtn.addEventListener('click', function() {
+                // Simulate payment confirmation
+                paymentContainer.classList.add('hidden');
+                successContainer.classList.remove('hidden');
+                
+                // Generate a random registration code
+                const randomCode = 'LAB-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                registrationCodeEl.textContent = randomCode;
+
+                window.scrollTo({ top: document.getElementById('form-pendaftaran').offsetTop, behavior: 'smooth' });
+            });
+
+            backToFormBtn.addEventListener('click', function() {
+                paymentContainer.classList.add('hidden');
+                formContainer.classList.remove('hidden');
+            });
+
+            // Initial calculation
+            calculateTotal();
+        });
+    </script>
+</body>
+</html>

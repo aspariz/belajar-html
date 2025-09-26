@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Uji Sampel Limbah - [Nama Laboratorium Anda]</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .hero-gradient {
+            background: linear-gradient(90deg, rgb(30, 64, 175) 0%, rgba(59,130,246,1) 100%);
+        }
+        .step-card::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            top: -2rem;
+            left: -2rem;
+            width: 4rem;
+            height: 4rem;
+            background-color: #dbeafe; /* blue-100 */
+            color: #1e3a8a; /* blue-900 */
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            border: 4px solid white;
+        }
+        body {
+            counter-reset: step-counter;
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        /* Custom modal styles */
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="smooth-scroll">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-blue-800">
+                🔬 Dinas Lingkungan Hidup Kota Tegal
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#alur" class="text-gray-600 hover:text-blue-600">Alur Pendaftaran</a>
+                <a href="#layanan" class="text-gray-600 hover:text-blue-600">Layanan Kami</a>
+                <a href="#faq" class="text-gray-600 hover:text-blue-600">FAQ</a>
+                <a href="#kontak" class="text-gray-600 hover:text-blue-600">Kontak</a>
+            </div>
+            <a href="#form-pendaftaran" class="hidden md:inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                Daftar Sekarang
+            </a>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+             <a href="#alur" class="block py-2 text-gray-600 hover:text-blue-600">Alur Pendaftaran</a>
+             <a href="#layanan" class="block py-2 text-gray-600 hover:text-blue-600">Layanan Kami</a>
+             <a href="#faq" class="block py-2 text-gray-600 hover:text-blue-600">FAQ</a>
+             <a href="#kontak" class="block py-2 text-gray-600 hover:text-blue-600">Kontak</a>
+             <a href="#form-pendaftaran" class="mt-2 block w-full text-center bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                Daftar Sekarang
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-gradient text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Pengujian limbah Dinas Lingkungan Hidup Kota tegal</h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto text-blue-100">Cepat, Akurat, dan Terpercaya untuk memastikan bisnis Anda mematuhi standar baku mutu lingkungan.</p>
+                <a href="#form-pendaftaran" class="mt-8 inline-block bg-white text-blue-700 font-bold px-8 py-4 rounded-lg shadow-lg hover:bg-gray-100 transition-transform transform hover:scale-105">
+                    Mulai Pendaftaran
+                </a>
+            </div>
+        </section>
+
+        <!-- Alur Pendaftaran Section -->
+        <section id="alur" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Alur Pendaftaran Mudah</h2>
+                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Kami menyederhanakan prosesnya dalam 4 langkah agar Anda bisa fokus pada bisnis Anda.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-8">
+                    <!-- Step 1 -->
+                    <div class="relative p-8">
+                        <div class="step-card">
+                            <h3 class="font-bold text-xl mb-2 text-blue-800">Isi Formulir</h3>
+                            <p class="text-gray-600">Lengkapi formulir pendaftaran online dengan detail perusahaan dan informasi sampel.</p>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="relative p-8 mt-12 md:mt-0">
+                        <div class="step-card">
+                            <h3 class="font-bold text-xl mb-2 text-blue-800">Pembayaran</h3>
+                            <p class="text-gray-600">Dapatkan kode registrasi unik & rincian biaya. Lakukan pembayaran dan konfirmasi.</p>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="relative p-8 mt-12 lg:mt-0">
+                        <div class="step-card">
+                            <h3 class="font-bold text-xl mb-2 text-blue-800">Kirim Sampel</h3>
+                            <p class="text-gray-600">Kemas sampel sesuai panduan, tuliskan kode registrasi, dan kirim ke lab kami.</p>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="relative p-8 mt-12 lg:mt-0">
+                        <div class="step-card">
+                            <h3 class="font-bold text-xl mb-2 text-blue-800">Terima Hasil</h3>
+                            <p class="text-gray-600">Sertifikat Hasil Uji (SHU) digital akan dikirim ke email Anda dalam 7-14 hari kerja.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Pendaftaran Section -->
+        <section id="form-pendaftaran" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                    <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">Formulir Pendaftaran</h2>
+                    <p class="text-center text-gray-500 mb-10">Mohon isi data di bawah ini dengan lengkap dan benar.</p>
+                    
+                    <form id="registrationForm" class="space-y-8">
+                        <!-- Informasi Klien -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-700 border-b-2 border-blue-200 pb-2 mb-6">1. Informasi Perusahaan</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="md:col-span-2">
+                                    <label for="company-name" class="block text-sm font-medium text-gray-700">Nama Perusahaan</label>
+                                    <input type="text" id="company-name" placeholder="Contoh: Hotel A" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label for="company-address" class="block text-sm font-medium text-gray-700">Alamat Perusahaan</label>
+                                    <textarea id="company-address" rows="3" placeholder="Alamat lengkap perusahaan Anda" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                                </div>
+                                <div>
+                                    <label for="pic-name" class="block text-sm font-medium text-gray-700">Nama Penanggung Jawab (PIC)</label>
+                                    <input type="text" id="pic-name" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                                <div>
+                                    <label for="pic-name" class="block text-sm font-medium text-gray-700">Upload Dokumen Pendukung</label>
+                                    <input type="text" id="pic-name" placeholder="Dokumen NPWP" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                                <div>
+                                    <label for="pic-phone" class="block text-sm font-medium text-gray-700">Nomor Telepon/WhatsApp (Aktif)</label>
+                                    <input type="tel" id="pic-phone" placeholder="08xxxxxxxxxx" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                                <div>
+                                    <label for="pic-email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
+                                    <input type="email" id="pic-email" placeholder="Contohemail@gmail.com" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informasi Sampel -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-700 border-b-2 border-blue-200 pb-2 mb-6">2. Informasi Sampel</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="sample-type" class="block text-sm font-medium text-gray-700">Jenis Sampel</label>
+                                    <input type="text" id="sample-type" value="Limbah Cair" class="mt-1 block w-full px-4 py-2 bg-gray-200 border border-gray-300 rounded-lg" readonly>
+                                </div>
+                                <div>
+                                </div>
+                                <div>
+                                    <label for="sample-date" class="block text-sm font-medium text-gray-700">Tanggal Pengambilan Sampel</label>
+                                    <input type="date" id="sample-date" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                                <div>
+                                    <label for="sample-time" class="block text-sm font-medium text-gray-700">Waktu Pengambilan Sampel</label>
+                                    <input type="time" id="sample-time" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <!-- Submit Button -->
+                        <div class="text-center pt-6">
+                            <button type="submit" class="w-full md:w-auto bg-blue-600 text-white font-bold text-lg px-12 py-4 rounded-lg shadow-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-300 transform hover:scale-105">
+                                KIRIM PENDAFTARAN
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layanan/Keunggulan Section -->
+        <section id="layanan" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Mengapa Memilih Kami?</h2>
+                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Kami berkomitmen pada kualitas, kecepatan, dan kerahasiaan.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="text-center p-6 bg-gray-50 rounded-xl">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-2 text-gray-800">Terakreditasi KAN</h3>
+                        <p class="text-gray-600">Hasil uji valid dan diakui secara nasional, menjamin kepatuhan regulasi.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="text-center p-6 bg-gray-50 rounded-xl">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-2 text-gray-800">Cepat & Akurat</h3>
+                        <p class="text-gray-600">Instrumentasi modern dan metode SNI untuk hasil yang presisi dan efisien.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="text-center p-6 bg-gray-50 rounded-xl">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-2 text-gray-800">Tim Ahli</h3>
+                        <p class="text-gray-600">Analis profesional dan berpengalaman siap memberikan konsultasi hasil uji.</p>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="text-center p-6 bg-gray-50 rounded-xl">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        </div>
+                        <h3 class="font-bold text-xl mb-2 text-gray-800">Kerahasiaan Terjamin</h3>
+                        <p class="text-gray-600">Kami menjamin kerahasiaan seluruh data klien dan hasil pengujian Anda.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQ Section -->
+        <section id="faq" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Pertanyaan Umum (FAQ)</h2>
+                </div>
+                <div class="max-w-3xl mx-auto space-y-4">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-semibold text-lg text-gray-800">Berapa biaya pengujian untuk paket hotel?</h3>
+                        <p class="mt-2 text-gray-600">Biaya akan tertera pada rincian tagihan setelah Anda mengirimkan formulir pendaftaran. Untuk estimasi awal, silakan hubungi tim kami melalui kontak yang tersedia.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-semibold text-lg text-gray-800">Bagaimana cara mengambil dan mengemas sampel yang benar?</h3>
+                        <p class="mt-2 text-gray-600">Pengambilan sampel yang benar sangat krusial. Silakan unduh panduan lengkap kami di <a href="#" class="text-blue-600 font-medium hover:underline">sini</a>. Panduan tersebut berisi instruksi detail mengenai botol, volume, dan pengawetan sampel.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-semibold text-lg text-gray-800">Apakah saya akan mendapatkan pemberitahuan saat sampel tiba di lab?</h3>
+                        <p class="mt-2 text-gray-600">Ya, tim administrasi kami akan mengirimkan konfirmasi penerimaan sampel melalui email atau WhatsApp yang Anda daftarkan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="kontak" class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">🔬 Lab Uji Limbah</h3>
+                    <p class="text-gray-400">Laboratorium pengujian lingkungan terakreditasi dan terpercaya di Indonesia.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Kontak Kami</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start">
+                            <span class="mr-2 mt-1">📍</span> <span>[Alamat Lengkap Laboratorium Anda], Jakarta, Indonesia</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="mr-2">📧</span> <a href="mailto:info@lab-anda.com" class="hover:text-white">info@lab-anda.com</a>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="mr-2">📞</span> <a href="tel:+62211234567" class="hover:text-white">(021) 123-4567</a>
+                        </li>
+                         <li class="flex items-center">
+                            <span class="mr-2">📱</span> <a href="https://wa.me/6281234567890" class="hover:text-white">0812-3456-7890 (WhatsApp)</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Jam Operasional</h3>
+                    <p class="text-gray-300">Senin - Jumat: 08:00 - 17:00 WIB</p>
+                    <p class="text-gray-300">Sabtu: 08:00 - 12:00 WIB</p>
+                    <p class="text-gray-300">Minggu & Hari Libur: Tutup</p>
+                </div>
+            </div>
+            <div class="mt-10 pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
+                <p>&copy; <span id="year"></span> [Nama Laboratorium Anda]. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 modal-backdrop opacity-0 pointer-events-none">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center modal-content transform scale-95">
+            <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-5">
+                <svg class="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800">Pendaftaran Berhasil!</h3>
+            <p class="text-gray-600 my-4">Terima kasih telah melakukan pendaftaran. Tim kami akan segera mengirimkan kode registrasi dan rincian pembayaran ke email Anda.</p>
+            <button id="closeModalButton" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-colors">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+        // JavaScript for dynamic year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // JavaScript for mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // JavaScript for form submission and modal
+        const registrationForm = document.getElementById('registrationForm');
+        const successModal = document.getElementById('successModal');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const modalBackdrop = successModal.querySelector('.modal-backdrop');
+        const modalContent = successModal.querySelector('.modal-content');
+
+        registrationForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent actual form submission
+            
+            // Show the modal with transitions
+            successModal.classList.remove('pointer-events-none');
+            successModal.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-95');
+
+            // Here you would typically send the form data to your server.
+            // For this demo, we just show the success message.
+            console.log('Form submitted!');
+        });
+
+        function closeModal() {
+            successModal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                successModal.classList.add('pointer-events-none');
+                registrationForm.reset(); // Reset form fields
+            }, 300); // Match transition duration
+        }
+
+        closeModalButton.addEventListener('click', closeModal);
+        successModal.addEventListener('click', function(event) {
+            if (event.target === successModal) {
+                closeModal();
+            }
+        });
+    </script>
+
+</body>
+</html>

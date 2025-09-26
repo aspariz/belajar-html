@@ -1,0 +1,66 @@
+*, html{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: #f4f4f4;
+}
+nav {
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    justify-content: space-between;
+    display: flex;
+}
+nav div img{
+    width: 75px;
+}
+nav ul{
+    display: flex;
+    align-items: center;
+    gap:2rem;
+    list-style: none;
+}
+nav ul li a{
+    text-decoration: none;
+    font-family: "Segoe UI", sans-serif;
+    color: #191919;
+    font-weight: 600;
+    padding: 8px 0;
+    transition: all;
+    transition-duration: 300ms;
+}
+nav ul li a:hover {
+    color: #1102e8;
+    border-bottom: 1px;
+}
+
+.ikon{
+    font-size: 28px;
+    display: none;
+}
+.portofolio{
+    align-items: center;
+    display: flex;
+    padding: 1%;
+}
+@media only screen and (max-width: 768px){
+    nav{
+        flex-wrap: wrap;
+        position: fixed;
+        width: 100%;
+        top: 0;
+    }
+    nav ul{
+        flex-direction: column;
+        width: 100%;
+    }
+
+    nav ul.hide{
+        display: none;
+    }
+.ikon{
+    display: flex;
+    align-items: center;
+}
+}

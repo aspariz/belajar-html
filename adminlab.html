@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Admin - Laboratorium Analitik Indonesia</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons for modern icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- jsPDF for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* bg-gray-100 */
+        }
+        .view-container {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .hidden-view {
+            display: none;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Login View -->
+    <div id="login-view" class="view-container min-h-screen flex items-center justify-center bg-gray-50">
+        <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900"><span class="text-blue-600">Portal</span>Admin</h1>
+                <p class="text-gray-500 mt-2">Silakan login untuk melanjutkan</p>
+            </div>
+            <form id="login-form">
+                <div class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
+                        <input type="email" id="email" value="admin@labanalitik.co.id" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" value="password" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="log-in" class="w-5 h-5"></i>
+                            Login
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App View (Dashboard, Detail, etc.) -->
+    <div id="main-app-view" class="view-container hidden-view">
+        <header class="bg-white shadow-md sticky top-0 z-50">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="text-2xl font-bold text-gray-900">
+                    <span class="text-blue-600">Admin</span>DLH
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="hidden sm:inline text-gray-600">Selamat datang, Admin!</span>
+                    <button id="logout-btn" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm">
+                        <i data-lucide="log-out" class="w-4 h-4 inline-block sm:hidden"></i>
+                        <span class="hidden sm:inline">Logout</span>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container mx-auto px-6 py-10">
+            <!-- Dashboard View -->
+            <div id="dashboard-view">
+                <h1 class="text-3xl font-bold text-gray-900 mb-8">Tugas Menunggu Validasi</h1>
+                <div id="validation-list" class="space-y-4">
+                    <!-- Validation tasks will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Validation Detail View -->
+            <div id="validation-detail-view" class="hidden-view max-w-5xl mx-auto">
+                <button id="back-to-dashboard-btn" class="mb-6 inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold">
+                    <i data-lucide="arrow-left-circle"></i>
+                    Kembali ke Daftar Tugas
+                </button>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-xl">
+                    <!-- Header -->
+                    <div class="pb-4 border-b-2 border-dashed mb-6">
+                        <h2 id="validation-task-id" class="text-2xl font-bold text-gray-900"></h2>
+                        <p id="validation-client-info" class="text-gray-600"></p>
+                    </div>
+
+                    <!-- Review Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Sample Data Review -->
+                        <div>
+                            <h3 class="font-semibold text-lg mb-3 text-gray-800">Data Penerimaan Sampel (dari Staf)</h3>
+                            <div id="review-sample-data" class="text-sm space-y-2 bg-gray-50 p-4 rounded-lg"></div>
+                        </div>
+                        <!-- Lab Result Review -->
+                        <div>
+                            <h3 class="font-semibold text-lg mb-3 text-gray-800">Hasil Uji Laboratorium (dari Staf)</h3>
+                            <div id="review-lab-results" class="text-sm space-y-2 bg-gray-50 p-4 rounded-lg"></div>
+                        </div>
+                    </div>
+
+                    <!-- Conclusion Review -->
+                    <div class="mt-6">
+                        <h3 class="font-semibold text-lg mb-2 text-gray-800">Kesimpulan Staf</h3>
+                        <div id="review-conclusion" class="text-sm bg-gray-50 p-4 rounded-lg border-l-4 border-blue-400"></div>
+                    </div>
+
+                    <!-- Admin Actions -->
+                    <div id="admin-actions" class="mt-10 pt-6 border-t flex flex-wrap gap-4 justify-end">
+                        <button id="reject-btn" class="bg-red-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-red-600 transition-colors inline-flex items-center gap-2">
+                            <i data-lucide="x-circle"></i>
+                            Tolak & Kembalikan
+                        </button>
+                        <button id="validate-btn" class="bg-green-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-600 transition-colors inline-flex items-center gap-2">
+                            <i data-lucide="check-circle"></i>
+                            Setujui & Validasi
+                        </button>
+                    </div>
+
+                    <!-- PDF Generation Action -->
+                    <div id="pdf-action" class="hidden-view mt-10 pt-6 border-t text-center">
+                        <p class="text-green-700 font-semibold mb-4">Hasil pengujian telah berhasil divalidasi.</p>
+                        <button id="generate-pdf-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center gap-2 text-lg">
+                            <i data-lucide="file-text"></i>
+                            Buat & Kirim Laporan PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Initialize Libraries ---
+            lucide.createIcons();
+            const { jsPDF } = window.jspdf;
+
+            // --- Mock Data ---
+            // This data simulates a shared database between Staff and Admin portals.
+            const tasksData = [
+                { id: 'LAB-G4H7J2', client: 'Hotel A', sampleType: 'Limbah Cair Outlet IPAL', date: '2025-07-15', status: 'Menunggu Validasi', 
+                  sampleData: { tanggalDiterima: '2025-07-15', kondisiSampel: 'Baik & Tersegel', catatanPenerimaan: 'Suhu 8°C' }, 
+                  results: { pH: 7.1, BOD: 48, COD: 95, TSS: 42, MinyakLemak: 5, Amonia: 8, TotalColiform: 5000, kesimpulan: 'Semua parameter memenuhi baku mutu. Kinerja IPAL baik.' } },
+                { id: 'LAB-X9K3L1', client: 'Industri Manufaktur XYZ', sampleType: 'Limbah Cair Produksi', date: '2025-07-14', status: 'Dalam Pengujian', sampleData: {}, results: {} },
+                { id: 'LAB-P2R5S8', client: 'Restoran Bintang Lima', sampleType: 'Limbah Cair Dapur', date: '2025-07-13', status: 'Laporan Terkirim', sampleData: {}, results: {} },
+                { id: 'LAB-M6N1B4', client: 'Klinik Sehat Sentosa', sampleType: 'Limbah Medis Cair', date: '2025-07-15', status: 'Menunggu Validasi', 
+                  sampleData: { tanggalDiterima: '2025-07-16', kondisiSampel: 'Baik & Tersegel', catatanPenerimaan: '' }, 
+                  results: { pH: 9.5, BOD: 60, COD: 120, TSS: 55, MinyakLemak: 3, Amonia: 12, TotalColiform: 15000, kesimpulan: 'Parameter pH, COD, Amonia, dan Coliform melebihi baku mutu. Perlu evaluasi proses desinfeksi dan netralisasi.' } },
+            ];
+             const parameters = [
+                { key: 'pH', name: 'pH', unit: '-', standard: '6.0 - 9.0' },
+                { key: 'BOD', name: 'BOD', unit: 'mg/L', standard: '< 50' },
+                { key: 'COD', name: 'COD', unit: 'mg/L', standard: '< 100' },
+                { key: 'TSS', name: 'TSS', unit: 'mg/L', standard: '< 50' },
+                { key: 'MinyakLemak', name: 'Minyak & Lemak', unit: 'mg/L', standard: '< 10' },
+                { key: 'Amonia', name: 'Amonia', unit: 'mg/L', standard: '< 10' },
+                { key: 'TotalColiform', name: 'Total Coliform', unit: 'MPN/100mL', standard: '< 10000' },
+            ];
+
+            // --- Elements ---
+            const loginView = document.getElementById('login-view');
+            const mainAppView = document.getElementById('main-app-view');
+            const dashboardView = document.getElementById('dashboard-view');
+            const validationDetailView = document.getElementById('validation-detail-view');
+            const loginForm = document.getElementById('login-form');
+            const logoutBtn = document.getElementById('logout-btn');
+            const validationListContainer = document.getElementById('validation-list');
+            const backToDashboardBtn = document.getElementById('back-to-dashboard-btn');
+            const validateBtn = document.getElementById('validate-btn');
+            const rejectBtn = document.getElementById('reject-btn');
+            const generatePdfBtn = document.getElementById('generate-pdf-btn');
+
+            let currentTaskId = null;
+
+            // --- Functions ---
+            const renderDashboard = () => {
+                validationListContainer.innerHTML = '';
+                const tasksToValidate = tasksData.filter(t => t.status === 'Menunggu Validasi' || t.status === 'Tervalidasi');
+                
+                if (tasksToValidate.length === 0) {
+                    validationListContainer.innerHTML = `<div class="text-center p-8 bg-white rounded-lg shadow-sm"><p class="text-gray-500">Tidak ada tugas yang memerlukan validasi saat ini.</p></div>`;
+                    return;
+                }
+
+                tasksToValidate.forEach(task => {
+                    const isValidated = task.status === 'Tervalidasi';
+                    const taskCard = `
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 ${isValidated ? 'border-green-500' : 'border-orange-500'} flex items-center justify-between gap-4">
+                            <div>
+                                <p class="font-bold text-gray-800">${task.client}</p>
+                                <p class="text-sm text-gray-500">${task.id} - ${task.sampleType}</p>
+                            </div>
+                            <button data-task-id="${task.id}" class="task-action-btn whitespace-nowrap bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                                ${isValidated ? 'Lihat & Buat Laporan' : 'Validasi Hasil'}
+                            </button>
+                        </div>
+                    `;
+                    validationListContainer.innerHTML += taskCard;
+                });
+            };
+
+            const switchView = (viewToShow) => {
+                [dashboardView, validationDetailView].forEach(v => v.classList.add('hidden-view'));
+                viewToShow.classList.remove('hidden-view');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const populateValidationDetail = (taskId) => {
+                const task = tasksData.find(t => t.id === taskId);
+                if (!task) return;
+                currentTaskId = taskId;
+
+                // Header
+                document.getElementById('validation-task-id').textContent = `Review Tugas: ${task.id}`;
+                document.getElementById('validation-client-info').textContent = `${task.client} - Diajukan pada ${task.date}`;
+
+                // Sample Data
+                const sampleContainer = document.getElementById('review-sample-data');
+                sampleContainer.innerHTML = `
+                    <p><strong>Tanggal Diterima:</strong> ${task.sampleData.tanggalDiterima}</p>
+                    <p><strong>Kondisi Sampel:</strong> ${task.sampleData.kondisiSampel}</p>
+                    <p><strong>Catatan Staf:</strong> ${task.sampleData.catatanPenerimaan || '-'}</p>
+                `;
+
+                // Lab Results
+                const resultsContainer = document.getElementById('review-lab-results');
+                resultsContainer.innerHTML = Object.keys(task.results)
+                    .filter(key => key !== 'kesimpulan')
+                    .map(key => `<p><strong>${key}:</strong> ${task.results[key]}</p>`).join('');
+                
+                // Conclusion
+                document.getElementById('review-conclusion').innerHTML = `<p>${task.results.kesimpulan}</p>`;
+
+                // Show/hide action buttons
+                if (task.status === 'Tervalidasi' || task.status === 'Laporan Terkirim') {
+                    document.getElementById('admin-actions').classList.add('hidden-view');
+                    document.getElementById('pdf-action').classList.remove('hidden-view');
+                    generatePdfBtn.disabled = task.status === 'Laporan Terkirim';
+                    generatePdfBtn.textContent = task.status === 'Laporan Terkirim' ? 'Laporan Telah Terkirim' : 'Buat & Kirim Laporan PDF';
+                } else {
+                    document.getElementById('admin-actions').classList.remove('hidden-view');
+                    document.getElementById('pdf-action').classList.add('hidden-view');
+                }
+            };
+
+            const generatePDF = () => {
+                const task = tasksData.find(t => t.id === currentTaskId);
+                if (!task) return;
+
+                const doc = new jsPDF();
+                
+                // Header
+                doc.setFontSize(18);
+                doc.setFont('helvetica', 'bold');
+                doc.text('SERTIFIKAT HASIL UJI (SHU)', 105, 20, { align: 'center' });
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Nomor: SHU/${task.id}/${new Date().getFullYear()}`, 105, 28, { align: 'center' });
+
+                // Client Info
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Data Klien', 14, 45);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Nama Perusahaan: ${task.client}`, 14, 52);
+                doc.text(`Jenis Sampel: ${task.sampleType}`, 14, 59);
+                doc.text(`Tanggal Pengujian: ${task.sampleData.tanggalDiterima}`, 14, 66);
+                
+                // Results Table
+                const tableColumn = ["No.", "Parameter", "Hasil Uji", "Satuan", "Baku Mutu"];
+                const tableRows = [];
+                parameters.forEach((param, index) => {
+                    const resultValue = task.results[param.key] !== undefined ? task.results[param.key] : '-';
+                    const row = [
+                        index + 1,
+                        param.name,
+                        resultValue,
+                        param.unit,
+                        param.standard
+                    ];
+                    tableRows.push(row);
+                });
+
+                doc.autoTable({
+                    head: [tableColumn],
+                    body: tableRows,
+                    startY: 80,
+                    theme: 'grid',
+                    headStyles: { fillColor: [22, 160, 133] }
+                });
+
+                // Conclusion
+                let finalY = doc.autoTable.previous.finalY + 15;
+                doc.setFont('helvetica', 'bold');
+                doc.text('Kesimpulan & Rekomendasi', 14, finalY);
+                doc.setFont('helvetica', 'normal');
+                const splitConclusion = doc.splitTextToSize(task.results.kesimpulan, 180);
+                doc.text(splitConclusion, 14, finalY + 7);
+
+                // Signature
+                finalY = doc.internal.pageSize.height - 40;
+                doc.text(`Pekalongan, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`, 130, finalY);
+                doc.text('Administrator Lab,', 130, finalY + 7);
+                doc.text('Admin LabAnalitik', 130, finalY + 30);
+                doc.setFont('helvetica', 'bold');
+                doc.line(130, finalY + 28, 180, finalY + 28); // Signature line
+                
+                // Save the PDF
+                doc.save(`SHU_${task.id}.pdf`);
+            };
+
+            // --- Event Listeners ---
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                loginView.classList.add('hidden-view');
+                mainAppView.classList.remove('hidden-view');
+                renderDashboard();
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                mainAppView.classList.add('hidden-view');
+                loginView.classList.remove('hidden-view');
+            });
+            
+            validationListContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('.task-action-btn');
+                if (button) {
+                    const taskId = button.dataset.taskId;
+                    populateValidationDetail(taskId);
+                    switchView(validationDetailView);
+                }
+            });
+
+            backToDashboardBtn.addEventListener('click', () => {
+                switchView(dashboardView);
+                renderDashboard();
+            });
+
+            validateBtn.addEventListener('click', () => {
+                const task = tasksData.find(t => t.id === currentTaskId);
+                if (task) {
+                    task.status = 'Tervalidasi';
+                    populateValidationDetail(currentTaskId); // Refresh view
+                    alert(`Tugas ${task.id} telah divalidasi.`);
+                }
+            });
+
+            rejectBtn.addEventListener('click', () => {
+                const reason = prompt("Masukkan alasan penolakan (akan dikirim ke staf):");
+                if (reason) {
+                    const task = tasksData.find(t => t.id === currentTaskId);
+                    task.status = 'Ditolak'; // In a real app, this would trigger a notification to the staff
+                    alert(`Tugas ${task.id} telah ditolak dengan alasan: ${reason}`);
+                    switchView(dashboardView);
+                    renderDashboard();
+                }
+            });
+
+            generatePdfBtn.addEventListener('click', () => {
+                alert("Laporan PDF akan dibuat dan diunduh. Setelah itu, sistem akan menandainya sebagai terkirim.");
+                generatePDF();
+                const task = tasksData.find(t => t.id === currentTaskId);
+                task.status = 'Laporan Terkirim';
+                populateValidationDetail(currentTaskId); // Refresh button state
+            });
+
+            // Initial call to create icons
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

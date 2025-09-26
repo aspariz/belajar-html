@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Kursus Modern</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc;
+        }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
+        .modal-backdrop {
+            background-color: rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="sidebar fixed md:relative w-64 h-full bg-white shadow-lg flex-shrink-0 z-50" id="sidebar">
+        <div class="p-6">
+            <a href="#" class="text-2xl font-extrabold text-indigo-700">Admin Kursus</a>
+        </div>
+        <nav class="mt-6 text-base">
+            <a href="#dashboard" class="nav-link flex items-center py-3 px-6 text-gray-700 bg-gray-100 font-bold" onclick="showPage('dashboard', this)">
+                <i class="fas fa-tachometer-alt w-6"></i><span>Dashboard</span>
+            </a>
+            <a href="#students" class="nav-link flex items-center py-3 px-6 text-gray-600 hover:bg-gray-100" onclick="showPage('students', this)">
+                <i class="fas fa-users w-6"></i><span>Manajemen Siswa</span>
+            </a>
+            <a href="#courses" class="nav-link flex items-center py-3 px-6 text-gray-600 hover:bg-gray-100" onclick="showPage('courses', this)">
+                <i class="fas fa-book-open w-6"></i><span>Manajemen Kursus</span>
+            </a>
+            <a href="#certificates" class="nav-link flex items-center py-3 px-6 text-gray-600 hover:bg-gray-100" onclick="showPage('certificates', this)">
+                <i class="fas fa-certificate w-6"></i><span>Manajemen Sertifikat</span>
+            </a>
+            <a href="#reports" class="nav-link flex items-center py-3 px-6 text-gray-600 hover:bg-gray-100" onclick="showPage('reports', this)">
+                <i class="fas fa-chart-line w-6"></i><span>Laporan & Statistik</span>
+            </a>
+        </nav>
+        <div class="absolute bottom-0 w-full p-6">
+             <a href="#" class="flex items-center text-gray-600 hover:text-indigo-700">
+                <i class="fas fa-sign-out-alt w-6"></i><span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="flex justify-between md:justify-end items-center p-4 bg-white border-b">
+             <button id="menu-button" class="md:hidden text-gray-600">
+                <i class="fas fa-bars fa-lg"></i>
+            </button>
+            <div class="flex items-center space-x-4">
+                <p class="font-medium">Admin User</p>
+                <img src="https://placehold.co/40x40/A78BFA/FFFFFF?text=A" alt="Admin Avatar" class="rounded-full">
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Dashboard</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-gray-500 text-sm font-medium">Total Pendapatan (Bulan Ini)</h2>
+                        <p class="text-3xl font-bold text-indigo-600">Rp 125.500.000</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-gray-500 text-sm font-medium">Siswa Aktif</h2>
+                        <p class="text-3xl font-bold text-green-600">350</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-gray-500 text-sm font-medium">Pendaftar Baru (7 Hari)</h2>
+                        <p class="text-3xl font-bold text-blue-600">42</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-gray-500 text-sm font-medium">Kursus Terlaris</h2>
+                        <p class="text-xl font-bold text-gray-800">Fullstack Web Dev</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="font-bold mb-4">Tren Pendaftaran Siswa</h3>
+                        <canvas id="enrollmentChart"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="font-bold mb-4">Distribusi Siswa per Kursus</h3>
+                        <canvas id="courseDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Page -->
+            <div id="students" class="page hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Manajemen Siswa</h1>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex justify-between mb-4">
+                         <input type="text" placeholder="Cari siswa..." class="px-4 py-2 border rounded-lg w-1/2">
+                         <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700" onclick="openModal('studentModal')">Tambah Siswa</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="p-3">Nama</th>
+                                    <th class="p-3">Email</th>
+                                    <th class="p-3">Kursus</th>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-table-body">
+                                <!-- Data Siswa akan di-render di sini oleh JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Courses Page -->
+            <div id="courses" class="page hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Manajemen Kursus & Jadwal</h1>
+                 <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex justify-between mb-4">
+                         <h2 class="text-xl font-semibold">Daftar Kursus</h2>
+                         <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700" onclick="openModal('courseModal')">Tambah Kursus</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="p-3">Nama Kursus</th>
+                                    <th class="p-3">Kategori</th>
+                                    <th class="p-3">Harga</th>
+                                    <th class="p-3">Mentor</th>
+                                    <th class="p-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="course-table-body">
+                                <!-- Data Kursus akan di-render di sini oleh JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certificates Page -->
+            <div id="certificates" class="page hidden">
+                 <h1 class="text-3xl font-bold text-gray-800 mb-6">Manajemen Sertifikat</h1>
+                 <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex justify-between mb-4">
+                         <h2 class="text-xl font-semibold">Siswa yang Telah Lulus</h2>
+                         <input type="text" placeholder="Cari siswa lulus..." class="px-4 py-2 border rounded-lg w-1/2">
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="p-3">Nama Siswa</th>
+                                    <th class="p-3">Kursus</th>
+                                    <th class="p-3">Tanggal Lulus</th>
+                                    <th class="p-3">Status Sertifikat</th>
+                                    <th class="p-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="certificate-table-body">
+                                <!-- Data Sertifikat akan di-render di sini oleh JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reports Page -->
+            <div id="reports" class="page hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Laporan & Statistik</h1>
+                <div class="flex items-center bg-white p-4 rounded-lg shadow mb-6">
+                    <label for="date-range" class="mr-4 font-medium">Pilih Rentang Waktu:</label>
+                    <input type="date" class="border rounded px-2 py-1">
+                    <span class="mx-2">hingga</span>
+                    <input type="date" class="border rounded px-2 py-1">
+                    <button class="bg-blue-500 text-white px-4 py-1 rounded ml-4 hover:bg-blue-600">Terapkan</button>
+                </div>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="font-bold mb-4">Laporan Penjualan per Kursus</h3>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="font-bold mb-4">Sumber Informasi Pendaftar</h3>
+                        <canvas id="sourceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Student Modal -->
+    <div id="studentModal" class="modal-backdrop fixed inset-0 flex items-center justify-center hidden opacity-0 z-50">
+        <div class="modal-content bg-white w-1/2 rounded-lg shadow-xl p-8 transform -translate-y-10">
+            <h2 class="text-2xl font-bold mb-6">Detail Siswa</h2>
+            <form>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                        <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" value="Budi Santoso">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" value="budi.s@example.com">
+                    </div>
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700">Pilihan Kursus</label>
+                        <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <option>Fullstack Web Development</option>
+                            <option selected>Python untuk Data Science</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700">Status</label>
+                         <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <option>Menunggu Pembayaran</option>
+                            <option selected>Aktif</option>
+                            <option>Selesai</option>
+                            <option>Dibatalkan</option>
+                        </select>
+                    </div>
+                 </div>
+                 <div class="mt-8 flex justify-end space-x-3">
+                    <button type="button" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300" onclick="closeModal('studentModal')">Batal</button>
+                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Simpan</button>
+                 </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Course Modal -->
+    <div id="courseModal" class="modal-backdrop fixed inset-0 flex items-center justify-center hidden opacity-0 z-50">
+        <div class="modal-content bg-white w-1/2 rounded-lg shadow-xl p-8 transform -translate-y-10">
+            <h2 class="text-2xl font-bold mb-6">Detail Kursus</h2>
+            <form>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nama Kursus</label>
+                        <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3" placeholder="Contoh: Belajar JavaScript Modern">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Kategori</label>
+                        <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3" placeholder="Contoh: Programming">
+                    </div>
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700">Harga</label>
+                        <input type="number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3" placeholder="Contoh: 1500000">
+                    </div>
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700">Mentor</label>
+                         <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3" placeholder="Contoh: Dr. Andi Wijaya">
+                    </div>
+                 </div>
+                 <div class="mt-8 flex justify-end space-x-3">
+                    <button type="button" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300" onclick="closeModal('courseModal')">Batal</button>
+                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Simpan</button>
+                 </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Certificate Modal -->
+    <div id="certificatePreviewModal" class="modal-backdrop fixed inset-0 flex items-center justify-center hidden opacity-0 z-50">
+        <div class="modal-content bg-white w-2/3 rounded-lg shadow-xl p-8 transform -translate-y-10">
+             <div class="border-4 border-blue-300 p-4 text-center bg-blue-50">
+                <h1 class="text-3xl font-bold text-blue-800">SERTIFIKAT KELULUSAN</h1>
+                <p class="mt-4 text-lg">Dengan ini menyatakan bahwa:</p>
+                <p id="cert-student-name" class="text-4xl font-extrabold text-indigo-700 my-6">Nama Siswa</p>
+                <p class="text-lg">Telah berhasil menyelesaikan kursus:</p>
+                <p id="cert-course-name" class="text-2xl font-bold my-4">Nama Kursus</p>
+                <p class="text-sm">Pada tanggal <span id="cert-completion-date">28 Juni 2025</span></p>
+                <p class="text-xs mt-8">No. Sertifikat: <span id="cert-id">CERT-12345-67890</span></p>
+            </div>
+             <div class="mt-8 flex justify-end space-x-3">
+                <button type="button" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300" onclick="closeModal('certificatePreviewModal')">Tutup</button>
+                <button type="button" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Download PDF</button>
+             </div>
+        </div>
+    </div>
+
+
+<script>
+    // --- Mock Data ---
+    const mockStudents = [
+        { id: 1, name: 'Budi Santoso', email: 'budi.s@example.com', course: 'Python untuk Data Science', status: 'Aktif' },
+        { id: 2, name: 'Citra Lestari', email: 'citra.l@example.com', course: 'Fullstack Web Development', status: 'Aktif' },
+        { id: 3, name: 'Dewi Wulandari', email: 'dewi.w@example.com', course: 'Desain Grafis Profesional', status: 'Selesai' },
+        { id: 4, name: 'Ahmad Yani', email: 'ahmad.y@example.com', course: 'Bahasa Inggris Bisnis', status: 'Menunggu Pembayaran' },
+        { id: 5, name: 'Eko Prasetyo', email: 'eko.p@example.com', course: 'Fullstack Web Development', status: 'Dibatalkan' },
+    ];
+
+    const mockCourses = [
+        { id: 1, name: 'Python untuk Data Science', category: 'Programming', price: '2.500.000', mentor: 'Dr. Andi Wijaya' },
+        { id: 2, name: 'Fullstack Web Development', category: 'Programming', price: '3.000.000', mentor: 'Joko Susanto' },
+        { id: 3, name: 'Desain Grafis Profesional', category: 'Desain', price: '2.000.000', mentor: 'Rina Dewi' },
+        { id: 4, name: 'Bahasa Inggris Bisnis', category: 'Bahasa', price: '1.500.000', mentor: 'Sarah Lee' },
+    ];
+    
+    const mockCertificates = [
+        { id: 1, studentName: 'Dewi Wulandari', courseName: 'Desain Grafis Profesional', completionDate: '2025-05-20', status: 'Terkirim' },
+        { id: 2, studentName: 'Ahmad Santoso', courseName: 'Fullstack Web Development', completionDate: '2025-06-15', status: 'Belum Dibuat' },
+    ];
+
+    // --- Page & Modal Logic ---
+    function showPage(pageId, element) {
+        document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
+        document.getElementById(pageId).classList.remove('hidden');
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('bg-gray-100', 'font-bold');
+            link.classList.add('text-gray-600');
+        });
+        element.classList.add('bg-gray-100', 'font-bold');
+        element.classList.remove('text-gray-600');
+        
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+        }
+    }
+
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.remove('hidden');
+        setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        setTimeout(() => modal.querySelector('.modal-content').classList.remove('-translate-y-10'), 10);
+    }
+    
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.add('opacity-0');
+        modal.querySelector('.modal-content').classList.add('-translate-y-10')
+        setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+    
+    // --- Data Rendering ---
+    function renderStudentTable() {
+        const tbody = document.getElementById('student-table-body');
+        tbody.innerHTML = '';
+        mockStudents.forEach(student => {
+            const statusClass = {
+                'Aktif': 'bg-green-100 text-green-800',
+                'Selesai': 'bg-blue-100 text-blue-800',
+                'Menunggu Pembayaran': 'bg-yellow-100 text-yellow-800',
+                'Dibatalkan': 'bg-red-100 text-red-800'
+            }[student.status];
+
+            const row = `
+                <tr>
+                    <td class="p-3">${student.name}</td>
+                    <td class="p-3">${student.email}</td>
+                    <td class="p-3">${student.course}</td>
+                    <td class="p-3"><span class="px-2 py-1 text-xs font-medium rounded-full ${statusClass}">${student.status}</span></td>
+                    <td class="p-3">
+                        <button class="text-indigo-600 hover:text-indigo-900 mr-2" onclick="openModal('studentModal')"><i class="fas fa-edit"></i></button>
+                        <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+    
+    function renderCourseTable() {
+        const tbody = document.getElementById('course-table-body');
+        tbody.innerHTML = '';
+        mockCourses.forEach(course => {
+            const row = `
+                <tr>
+                    <td class="p-3">${course.name}</td>
+                    <td class="p-3">${course.category}</td>
+                    <td class="p-3">Rp ${course.price}</td>
+                    <td class="p-3">${course.mentor}</td>
+                    <td class="p-3">
+                        <button class="text-indigo-600 hover:text-indigo-900 mr-2" onclick="openModal('courseModal')"><i class="fas fa-edit"></i></button>
+                        <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+    
+     function renderCertificateTable() {
+        const tbody = document.getElementById('certificate-table-body');
+        tbody.innerHTML = '';
+        mockCertificates.forEach(cert => {
+            const statusClass = cert.status === 'Terkirim' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800';
+            const buttonText = cert.status === 'Terkirim' ? 'Lihat' : 'Buat Sertifikat';
+            const buttonClass = cert.status === 'Terkirim' ? 'bg-blue-500 hover:bg-blue-600' : 'bg-indigo-600 hover:bg-indigo-700';
+
+            const row = `
+                <tr>
+                    <td class="p-3">${cert.studentName}</td>
+                    <td class="p-3">${cert.courseName}</td>
+                    <td class="p-3">${cert.completionDate}</td>
+                    <td class="p-3"><span class="px-2 py-1 text-xs font-medium rounded-full ${statusClass}">${cert.status}</span></td>
+                    <td class="p-3">
+                        <button class="text-white px-3 py-1 rounded-lg text-sm ${buttonClass}" 
+                                onclick="previewCertificate('${cert.studentName}', '${cert.courseName}', '${cert.completionDate}')">
+                            ${buttonText}
+                        </button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+    
+    function previewCertificate(studentName, courseName, completionDate) {
+        document.getElementById('cert-student-name').textContent = studentName;
+        document.getElementById('cert-course-name').textContent = courseName;
+        document.getElementById('cert-completion-date').textContent = completionDate;
+        document.getElementById('cert-id').textContent = `CERT-${Date.now()}`;
+        openModal('certificatePreviewModal');
+    }
+
+    // --- Chart Logic ---
+    function createCharts() {
+        // Enrollment Chart
+        const enrollmentCtx = document.getElementById('enrollmentChart').getContext('2d');
+        new Chart(enrollmentCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+                datasets: [{
+                    label: 'Pendaftar Baru',
+                    data: [65, 59, 80, 81, 56, 95],
+                    fill: true,
+                    borderColor: 'rgb(79, 70, 229)',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    tension: 0.3
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        // Course Distribution Chart
+        const courseDistributionCtx = document.getElementById('courseDistributionChart').getContext('2d');
+        new Chart(courseDistributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Web Dev', 'Data Science', 'Desain Grafis', 'Bahasa'],
+                datasets: [{
+                    label: 'Siswa',
+                    data: [120, 95, 80, 55],
+                    backgroundColor: [
+                        'rgba(79, 70, 229, 0.8)',
+                        'rgba(34, 197, 94, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(249, 115, 22, 0.8)'
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        // Sales Chart (Reports)
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        new Chart(salesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Web Dev', 'Data Science', 'Desain Grafis', 'Bahasa'],
+                datasets: [{
+                    label: 'Pendapatan (juta Rp)',
+                    data: [45, 38, 30, 15],
+                    backgroundColor: [
+                        'rgba(79, 70, 229, 0.8)',
+                        'rgba(34, 197, 94, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(249, 115, 22, 0.8)'
+                    ],
+                }]
+            },
+            options: { responsive: true, indexAxis: 'y' }
+        });
+        
+        // Source Chart (Reports)
+        const sourceCtx = document.getElementById('sourceChart').getContext('2d');
+        new Chart(sourceCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Media Sosial', 'Rekomendasi Teman', 'Iklan Online', 'Lainnya'],
+                datasets: [{
+                    label: 'Sumber',
+                    data: [150, 90, 75, 35],
+                    backgroundColor: [
+                        'rgba(219, 39, 119, 0.8)',
+                        'rgba(14, 165, 233, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(107, 114, 128, 0.8)'
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: { responsive: true }
+        });
+    }
+    
+    // --- Initial Setup ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initial render
+        renderStudentTable();
+        renderCourseTable();
+        renderCertificateTable();
+        createCharts();
+
+        // Mobile sidebar toggle
+        document.getElementById('menu-button').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+        // Close modal on backdrop click
+        document.querySelectorAll('.modal-backdrop').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if(e.target === modal) {
+                    closeModal(modal.id);
+                }
+            })
+        });
+    });
+
+</script>
+</body>
+</html>
